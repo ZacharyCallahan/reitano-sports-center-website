@@ -1,0 +1,55 @@
+.react-calendar {
+  /* Basic container styling */
+  @apply p-4 bg-white rounded-md shadow border border-gray-200;
+}
+
+/* Hide the default table layout by forcing a grid layout */
+.react-calendar__month-view__weekdays,
+.react-calendar__month-view__days {
+  display: grid !important;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem; /* or 8px, 1rem, etc. */
+}
+
+/* Center the weekday labels (Mon, Tue, etc.) in each cell */
+.react-calendar__month-view__weekdays__weekday {
+  @apply flex justify-center items-center font-semibold text-gray-600;
+  /* optional if you want smaller text: 
+     @apply text-sm;
+  */
+}
+
+/* Each day tile (button) */
+.react-calendar__tile {
+  @apply flex justify-center items-center h-10 rounded cursor-pointer
+    hover:bg-blue-50 hover:text-blue-700 transition-colors shadow-md;
+  /* Adjust the height (h-10) or add p-2 if you want more breathing room */
+}
+
+/* Today highlight */
+.react-calendar__tile--now {
+  @apply bg-blue-100 text-blue-700 font-bold;
+}
+
+/* Selected day */
+.react-calendar__tile--active {
+  @apply bg-blue-600 text-white;
+}
+
+/* Disable out-of-range or unavailable days */
+.react-calendar__tile--disabled {
+  @apply opacity-40 cursor-not-allowed;
+}
+
+/* Navigation bar (next/prev, month-year) */
+.react-calendar__navigation {
+  @apply flex justify-between items-center mb-2;
+}
+
+.react-calendar__navigation button {
+  @apply text-gray-700 hover:bg-gray-200 px-2 py-1 rounded transition-colors;
+}
+
+.react-calendar__navigation__label {
+  @apply font-semibold text-gray-800 text-lg;
+}
