@@ -2,7 +2,9 @@ import Image from "next/image";
 
 const ExperienceCard = ({ src, header, description }) => {
     return (
-        <div className="w-96 bg-white shadow-lg rounded-lg overflow-hidden text-center">
+        <div className="w-96 bg-white shadow-lg rounded-lg overflow-hidden text-center hover:scale-105
+        transition-transform duration-300 ease-in-out
+        ">
             <div className="relative w-full h-64">
                 <Image
                     src={src}

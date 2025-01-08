@@ -11,7 +11,9 @@ const Nav = () => {
                     <Link href="/about" className="text-black">Memberships</Link>
                     <Link href="/programs" className="text-black">Clinics</Link>
                 </li>
-                <Image src="/website-logo.webp" alt="Columbus Kids Sports" width={100} height={100} />
+                <Link href={"/"}>
+                    <Image src="/website-logo.webp" alt="Columbus Kids Sports" width={100} height={100} />
+                </Link>
                 <li className="flex-1 flex justify-evenly space-x-4">
                     <Link href="/contact" className="text-black">Training</Link>
                     <Link href="/contact" className="text-black">Our Team</Link>

@@ -1,3 +1,5 @@
+// prisma/schema.prisma
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,8 +9,157 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  USER
+  ADMIN
+  MODERATOR
+  TRAINER
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+enum ProductType {
+  TRAINING
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  UNPAID
+}
+
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id                   String         @id @default(uuid())
+  email                String         @unique
+  password             String?
+  role                 UserRole       @default(USER)
+  stripeCustomerId     String?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  firstName            String?
+  lastName             String?
+  passwordSet          Boolean        @default(false)
+  accounts             Account[]
+  subscriptions        Subscription[]
+  purchases            Purchase[]
+  // For a user that decides to book while logged in (optional)
+  bookings             Booking[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Coupon {
+  id            String       @id @default(uuid())
+  code          String       @unique
+  discountType  DiscountType
+  discountValue Float
+  expiresAt     DateTime?
+  isActive      Boolean      @default(true)
+  maxUses       Int
+  uses          Int          @default(0)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model MarketingList {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
+
+model Purchase {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  userId    String
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Subscription {
+  id                   String             @id @default(uuid())
+  stripeSubscriptionId String             @unique
+  status               SubscriptionStatus
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+  userId               String
+  productId            String
+  product              Product            @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Product {
+  id            String         @id @default(uuid())
+  name          String
+  description   String?
+  price         Float
+  priceId       String?        @unique
+  productType   ProductType
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  purchases     Purchase[]
+  subscriptions Subscription[]
+}
+
+// NEW - Coach / Trainer
+model Trainer {
+  id             String         @id @default(uuid())
+  name           String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  availabilities Availability[]
+  bookings       Booking[]
+}
+
+// NEW - Availability for each trainer
+model Availability {
+  id        String   @id @default(uuid())
+  date      DateTime
+  // Optionally store time slots if needed, or just use date
+  // startTime DateTime?
+  // endTime   DateTime?
+  trainerId String
+  trainer   Trainer  @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Booking Booking[]
+}
+
+// NEW - A booking (paid or unpaid, but once Stripe is done we set it to paid = true)
+model Booking {
+  id             String       @id @default(uuid())
+  userId         String?
+  user           User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  trainerId      String
+  trainer        Trainer      @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  availabilityId String
+  availability   Availability @relation(fields: [availabilityId], references: [id], onDelete: Cascade)
+  price          Float
+  // If user checks out without an account:
+  guestEmail     String?
+  guestName      String?
+  paid           Boolean      @default(false)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
