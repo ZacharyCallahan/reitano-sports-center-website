@@ -1,5 +1,3 @@
-// prisma/schema.prisma
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -32,21 +30,22 @@ enum SubscriptionStatus {
   UNPAID
 }
 
+// Existing Models
 model User {
-  id                   String         @id @default(uuid())
-  email                String         @unique
+  id                   String             @id @default(uuid())
+  email                String             @unique
   password             String?
-  role                 UserRole       @default(USER)
+  role                 UserRole           @default(USER)
   stripeCustomerId     String?
-  createdAt            DateTime       @default(now())
-  updatedAt            DateTime       @updatedAt
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
   firstName            String?
   lastName             String?
-  passwordSet          Boolean        @default(false)
+  passwordSet          Boolean            @default(false)
   accounts             Account[]
   subscriptions        Subscription[]
   purchases            Purchase[]
-  // For a user that decides to book while logged in (optional)
+  // Bookings relation
   bookings             Booking[]
 }
 
@@ -121,45 +120,38 @@ model Product {
   subscriptions Subscription[]
 }
 
-// NEW - Coach / Trainer
+// New Models for Training Flow
+
 model Trainer {
-  id             String         @id @default(uuid())
-  name           String
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  availabilities Availability[]
-  bookings       Booking[]
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  sessions  TrainingSession[]
 }
 
-// NEW - Availability for each trainer
-model Availability {
-  id        String   @id @default(uuid())
-  date      DateTime
-  // Optionally store time slots if needed, or just use date
-  // startTime DateTime?
-  // endTime   DateTime?
-  trainerId String
-  trainer   Trainer  @relation(fields: [trainerId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Booking Booking[]
+model TrainingSession {
+  id          String    @id @default(uuid())
+  trainerId   String
+  trainer     Trainer   @relation(fields: [trainerId], references: [id], onDelete: Cascade)
+  date        DateTime
+  price       Float
+  isBooked    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bookings    Booking[]
 }
 
-// NEW - A booking (paid or unpaid, but once Stripe is done we set it to paid = true)
 model Booking {
-  id             String       @id @default(uuid())
-  userId         String?
-  user           User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
-  trainerId      String
-  trainer        Trainer      @relation(fields: [trainerId], references: [id], onDelete: Cascade)
-  availabilityId String
-  availability   Availability @relation(fields: [availabilityId], references: [id], onDelete: Cascade)
-  price          Float
-  // If user checks out without an account:
-  guestEmail     String?
-  guestName      String?
-  paid           Boolean      @default(false)
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  id          String           @id @default(uuid())
+  sessionId   String
+  session     TrainingSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  userId      String?
+  user        User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email       String
+  name        String?
+  pricePaid   Float
+  paid        Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 }

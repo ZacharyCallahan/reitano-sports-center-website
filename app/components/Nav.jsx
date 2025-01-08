@@ -8,15 +8,15 @@ const Nav = () => {
         <nav className="h-32 bg-white container mx-auto px-32 py-4 flex justify-center">
             <ul className="flex items-center text-xl font-semibold w-full">
                 <li className="flex-1 flex justify-evenly space-x-4">
-                    <Link href="/about" className="text-black">Memberships</Link>
-                    <Link href="/programs" className="text-black">Clinics</Link>
+                    <Link href="/memberships" className="text-black">Memberships</Link>
+                    <Link href="/clincs" className="text-black">Clinics</Link>
                 </li>
                 <Link href={"/"}>
                     <Image src="/website-logo.webp" alt="Columbus Kids Sports" width={100} height={100} />
                 </Link>
                 <li className="flex-1 flex justify-evenly space-x-4">
-                    <Link href="/contact" className="text-black">Training</Link>
-                    <Link href="/contact" className="text-black">Our Team</Link>
+                    <Link href="/training" className="text-black">Training</Link>
+                    <Link href="/team" className="text-black">Our Team</Link>
                 </li>
             </ul>
 
