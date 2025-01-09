@@ -5,9 +5,9 @@ const ExperiencesSection = () => {
     return (
         <main className="font-sans">
             {/* Header Section */}
-            <section className="text-center p-6 sm:p-12">
-                <h1 className="text-2xl sm:text-4xl font-bold mb-4">
-                    REP Fieldhouse is a multi-purpose indoor sports facility in Columbus, Ohio.
+            <section className="text-center p-6 sm:p-12 flex items-center flex-col">
+                <h1 className="text-2xl sm:text-4xl font-bold mb-4 text-wrap w-1/2">
+                    REP Fieldhouse is a multi-purpose indoor sports <span className="border-b-2 border-red-600">facility</span> in Columbus, Ohio.
                 </h1>
                 <p className="max-w-xl mx-auto text-base sm:text-lg leading-relaxed">
                     The 23,000 square-foot venue features two hardwood basketball courts,
@@ -19,8 +19,10 @@ const ExperiencesSection = () => {
 
             {/* Horizontal divider + heading */}
             <section className="text-center mb-6">
-                <hr className="my-6 mx-auto w-4/5 border-gray-300" />
-                <h2 className="text-xl sm:text-3xl font-bold mt-4">REP Experiences</h2>
+                <hr className="my-6 mx-auto w-4/5 border-black" />
+                <h2 className="text-xl sm:text-4xl font-bold mt-4 text-red-600">Reitano Sports Center Elite Experiences</h2>
+                <hr className="mt-6 mb-16 mx-auto w-4/5 border-black" />
+
             </section>
 
             {/* Experiences Grid */}
