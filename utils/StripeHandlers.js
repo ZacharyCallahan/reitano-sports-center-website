@@ -1,5 +1,5 @@
 import  prisma  from '@/lib/prisma';
-import { sendBookingConfirmationEmail } from '@/app/(site)/training/actions';
+import { sendBookingConfirmationEmail } from '@/app/training/actions';
 
 export async function handlePaymentIntentSucceeded(paymentIntent) {
     // The bookingId is stored in paymentIntent.metadata when we created the Checkout Session
