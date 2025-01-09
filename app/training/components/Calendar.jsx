@@ -1,62 +1,60 @@
-// app/(site)/training/components/Calendar.jsx
-
 "use client";
 
-import ReactCalendar from 'react-calendar';
-import 'react-calendar/dist/Calendar.css';
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import ReactCalendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
+import "./CalendarOverrides.css"; // Our custom overrides
+import { motion } from "framer-motion";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useEffect, useState } from "react";
 
 export default function Calendar({ availableDates, selectedDate, onChange }) {
     const [value, setValue] = useState(selectedDate || null);
 
     useEffect(() => {
-        // Keep state in sync if parent changes selectedDate
         setValue(selectedDate);
     }, [selectedDate]);
 
-    // Convert availableDates (array of JS Dates) into a Set of "yyyy-mm-dd" for quick lookup
+    // Mark available dates in a Set
     const availableSet = new Set(
-        availableDates.map((d) => d.toISOString().split('T')[0])
+        availableDates.map((d) => d.toISOString().split("T")[0])
     );
 
-    // Function to check if a date is disabled
+    // Disable days not in availableDates
     const isTileDisabled = ({ date, view }) => {
-        if (view === 'month') {
-            const dayStr = date.toISOString().split('T')[0];
-            return !availableSet.has(dayStr); // disable days not in availableDates
+        if (view === "month") {
+            const dayStr = date.toISOString().split("T")[0];
+            return !availableSet.has(dayStr);
         }
         return false;
     };
 
-    // Optional styling or highlighting for days that are available
+    // Optionally highlight available days
     const tileClassName = ({ date, view }) => {
-        if (view === 'month') {
-            const dayStr = date.toISOString().split('T')[0];
+        if (view === "month") {
+            const dayStr = date.toISOString().split("T")[0];
             if (availableSet.has(dayStr)) {
-                return 'bg-blue-50 text-blue-600 font-semibold rounded-md';
+                return "font-semibold text-blue-700"; // Tailwind classes
             }
         }
         return null;
     };
 
-    // Handle date change
     const handleChange = (date) => {
         setValue(date);
         onChange?.(date);
     };
 
     return (
-        <motion.div
-            className="my-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-        >
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
             <ReactCalendar
                 onChange={handleChange}
                 value={value}
                 tileDisabled={isTileDisabled}
                 tileClassName={tileClassName}
+                next2Label={null}
+                prev2Label={null}
+                nextLabel={<FiChevronRight size={20} />}
+                prevLabel={<FiChevronLeft size={20} />}
             />
         </motion.div>
     );
