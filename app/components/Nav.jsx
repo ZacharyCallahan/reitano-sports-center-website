@@ -16,16 +16,16 @@ const Nav = () => {
             <div className="flex justify-between items-center w-1/2">
                 <ul className="flex items-center justify-between text-xl font-semibold w-full pr-8">
                     <li>
-                        <Link href="/memberships" className={`text-black ${isActive('/memberships') ? 'border-b-2 border-black' : ''} hover:border-b-2 hover:border-black`}>Memberships</Link>
+                        <Link href="/memberships" className={`text-black ${isActive('/memberships') ? 'border-b-2 border-red-600 font-bold' : ''} hover:text-red-600 transition-all duration-300`}>Memberships</Link>
                     </li>
                     <li>
-                        <Link href="/clincs" className={`text-black ${isActive('/clincs') ? 'border-b-2 border-black' : ''} hover:border-b-2 hover:border-black`}>Clinics</Link>
+                        <Link href="/clincs" className={`text-black ${isActive('/clincs') ? 'border-b-2 border-red-600 font-bold' : ''} hover:text-red-600 transition-all duration-300`}>Clinics</Link>
                     </li>
                     <li>
-                        <Link href="/training" className={`text-black ${isActive('/training') ? 'border-b-2 border-black' : ''} hover:border-b-2 hover:border-black`}>Training</Link>
+                        <Link href="/training" className={`text-black ${isActive('/training') ? 'border-b-2 border-red-600 font-bold' : ''} hover:text-red-600 transition-all duration-300`}>Training</Link>
                     </li>
                     <li>
-                        <Link href="/team" className={`text-black ${isActive('/team') ? 'border-b-2 border-black' : ''} hover:border-b-2 hover:border-black`}>Our Team</Link>
+                        <Link href="/team" className={`text-black ${isActive('/team') ? 'border-b-2 border-red-600 font-bold' : ''} hover:text-red-600 transition-all duration-300`}>Our Team</Link>
                     </li>
                 </ul>
 

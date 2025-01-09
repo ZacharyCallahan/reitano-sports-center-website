@@ -1,11 +1,13 @@
+import Link from "next/link";
+
 const Footer = () => {
     return (
         <footer className="bg-slate-700 py-4 mt-24 text-white">
             <div className="max-w-7xl mx-auto px-4 flex flex-col items-center md:flex-row md:justify-between">
                 <p className="mb-2 md:mb-0">© 2025 Reitano Sports Center</p>
                 <nav className="flex gap-4">
-                    <a href="/about" className="hover:underline">About Us</a>
-                    <a href="/contact" className="hover:underline">Contact</a>
+                    <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
+                    <Link href="/terms" className="hover:underline">Terms of Service</Link>
                 </nav>
             </div>
             <div className="max-w-7xl mx-auto px-4 mt-4 text-center md:text-left">
